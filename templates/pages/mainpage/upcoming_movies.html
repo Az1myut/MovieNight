@@ -1,0 +1,134 @@
+{% load static %}
+{% block upcoming_movies %}
+
+{% with first_movie=upcoming_movies.0  second_movie=upcoming_movies.1 third_movie=upcoming_movies.2  %}
+    
+
+    <!-- =============== START OF UPCOMING MOVIES SECTION =============== -->
+    <section class="upcoming-movies parallax ptb100" data-background="{% static 'assets/images/posters/movie-collection.jpg' %}" data-color="#3e4555" data-color-opacity="0.95" >
+        <div class="container">
+
+            <!-- Start of row -->
+            <div class="row justify-content-center">
+                <div class="col-md-7 text-center">
+                    <h2 class="title text-white">Upcoming Movies</h2>
+                </div>
+                <div class="col-md-4 align-self-center text-right">
+                    <a href="{% url 'movies:upcoming_movies' %}" class="btn btn-icon btn-main btn-effect">
+                        view all
+                        <i class="ti-angle-double-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- End of row -->
+
+
+
+            <!-- Start of row -->
+            <div class="row mt50">
+                
+                <!-- === Start of Upcoming Featured Movies & TV Shows === -->
+                <div class="col-md-8">
+                    
+                    
+                        
+                    <!-- Start of Upcoming Featured Item -->
+                    <div class="movie-box-1 upcoming-featured-item">
+
+                        <!-- Start of Poster -->
+                        {% if first_movie.image %}
+                            <img src="{{ first_movie.image.url }}" alt="">
+                        {% else %}
+                            <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                        {% endif %}
+                        <!-- End of Poster -->
+
+                        <!-- Start of Buttons -->
+                        
+                        <!-- End of Buttons -->
+
+                        <!-- Start of Movie Details -->
+                        <div class="movie-details">
+                            <h4 class="movie-title">
+                                <a href="{% url 'movies:movie_detail' first_movie.id %}">{{ first_movie.title }}</a>
+                            </h4>
+                            <span class="released">Release Date: {{ first_movie.release_date|date:"j M Y" }}</span>
+                        </div>
+                        <!-- End of Movie Details -->
+                    </div>
+                    <!-- End of Upcoming Featured Item -->
+
+                </div>
+                <!-- === End of Upcoming Featured Movies & TV Shows === -->
+
+
+                <!-- === Start of Upcoming Movies & TV Shows === -->
+                <div class="col-md-4">
+
+                    <!-- Start of Upcoming Item 1 -->
+                    <div class="movie-box-1 upcoming-item">
+
+                        <!-- Start of Poster -->
+                        {% if second_movie.image %}
+                            <img src="{{ second_movie.image.url }}" alt="">
+                        {% else %}
+                            <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                        {% endif %}
+                        <!-- End of Poster -->
+
+                        <!-- Start of Buttons -->
+                        
+                        <!-- End of Buttons -->
+
+                        <!-- Start of Movie Details -->
+                        <div class="movie-details">
+                            <h4 class="movie-title">
+                                <a href="{% url 'movies:movie_detail' second_movie.pk %}">{{ second_movie.title }}</a>
+                            </h4>
+                            <span class="released">Release Date: {{ second_movie.release_date|date:"j M Y" }}</span>
+                        </div>
+                        <!-- End of Movie Details -->
+
+                    </div>
+                    <!-- End of Upcoming Item 1 -->
+
+                    <!-- Start of Upcoming Item 2 -->
+                    <div class="movie-box-1 upcoming-item mt20">
+
+                        <!-- Start of Poster -->
+                        {% if third_movie.image %}
+                            <img src="{{ third_movie.image.url }}" alt="">
+                        {% else %}
+                            <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                        {% endif %}
+                        <!-- End of Poster -->
+
+                        <!-- Start of Buttons -->
+                        
+                        <!-- End of Buttons -->
+
+                        <!-- Start of Movie Details -->
+                        <div class="movie-details">
+                            <h4 class="movie-title">
+                                <a href="{% url 'movies:movie_detail' third_movie.pk %}">{{ third_movie.title }}</a>
+                            </h4>
+                            <span class="released">Release Date: {{ third_movie.release_date|date:"j M Y" }}</span>
+                        </div>
+                        <!-- End of Movie Details -->
+
+                    </div>
+                    <!-- End of Upcoming Item 2 -->
+
+                </div>
+                <!-- === End of Upcoming Movies & TV Shows === -->
+
+            </div>
+            <!-- End of row -->
+
+        </div>
+    </section>
+    <!-- =============== END OF UPCOMING MOVIES SECTION =============== -->
+
+{% endwith %}
+{% endblock upcoming_movies %}
+    

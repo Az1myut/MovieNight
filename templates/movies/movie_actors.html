@@ -1,0 +1,109 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+
+{% block content %}
+    
+<section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+    <div class="container">
+        <div class="inner">
+            
+            <h2 class="title">Actors of movie : {{ current_movie.title }} </h2>
+          
+            <h4 class="title"><a href = "{% url 'movies:movie_detail' current_movie.pk %}"> Return to Movie</a></h4>
+        </div>
+    </div>
+</section>
+    
+        <!-- =============== START OF MAIN =============== -->
+        <main class="ptb100">
+            <div class="container">
+            
+                {% if object_list %}
+                    
+                
+                    
+                <!-- Start of Celebrities Grid -->
+                <div class="row">
+                    {% for actor in page_obj  %}
+                        
+                    
+                        
+                    <!-- Celebrity Grid Item -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="celebrity-grid-1">
+                            <div class="celeb-container">
+
+                                <!-- Celebrity Image -->
+                                <div class="celebrity-image">
+                                    <a href="{% url 'actors:actor_detail' actor.pk %}">
+                                        {% if actor.image %}
+                                            <img src="{{ actor.image.url }}" alt="">
+                                        {% else %}
+                                            <img src="{% static 'assets/images/user.png' %}" alt="">
+                                        {% endif %}
+                                    </a>
+                                </div>
+
+                                <!-- Celebrity Content -->
+                                <div class="celebrity-content">
+                                    <div class="inner">
+                                        <h3 class="title"><a href="{% url 'actors:actor_detail' actor.pk %}">{{ actor.name }}</a></h3>
+                                       
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Celebrity Grid Item -->
+                    
+
+                </div>
+                <!-- End of Celebrities Grid -->
+
+
+
+                <!-- Start of Pagination -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <nav class="pagination">
+                            <ul>
+                                
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page={{ page_obj.previous_page_number }}"><i class="ti-angle-left"></i></a></li>
+                                {% endif %}
+
+                                <li><a href="?page=1" {% if page_obj.number == 1 %} class="current-page" {% endif %}>1</a></li>
+                                {% if paginator.num_pages > 1 %}
+                                    <li><a href="?page=2" {% if page_obj.number == 2 %} class="current-page" {% endif %}>2</a></li>
+                                    {% if paginator.num_pages > 2 %}
+                                        <li><a href="?page=3" {% if page_obj.number == 3 %} class="current-page" {% endif %}>3</a></li>
+                                    {% endif %}
+                                {% endif %}
+                                    
+                                
+                                
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}"><i class="ti-angle-right"></i></a></li>
+                                {% endif %}
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- End of Pagination -->
+                {% else %}
+                <h1>No actors for Movie: {{ current_movie.title }} </h1>
+                {% endif %}
+
+            </div>  
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+        
+
+{% endblock content %}

@@ -1,0 +1,14 @@
+<ul class="social-btns">
+    
+    {% for social in footer_socials %}
+        <li>
+            <a href="{{ social.url }}" class="social-btn-roll {{social.title}}">
+                <div class="social-btn-roll-icons">
+                    <i class="{{ social.icon_class }}"></i>
+                    <i class="{{ social.icon_class }}"></i>
+                </div>
+            </a>
+        </li>
+
+    {% endfor %}
+</ul>

@@ -1,0 +1,85 @@
+      {% load static %}
+      {% block latest_articles %}
+    {% load custom_tags %}
+      
+        
+      <!-- =============== END OF BLOG SECTION =============== -->
+       <section class="blog bg-light ptb100">
+        <div class="container">
+
+            <!-- Start of row -->
+            <div class="row">
+                <div class="col-md-8">
+                    <h2 class="title">Latest News</h2>
+                </div>
+    
+    
+                <div class="col-md-4 align-self-center text-right">
+                    <a href="{% url 'articles:articles_list' %}" class="btn btn-icon btn-main btn-effect">
+                        view all
+                        <i class="ti-angle-double-right"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- End of row -->
+
+
+            <!-- Start of row -->
+            <div class="row mt50">
+                
+                {% for article in latest_articles %}
+                    
+                
+                    
+                <!-- 1st Blog Item -->
+                <div class="col-md-4">
+                    <div class="bloglist-post-holder shadow-hover">
+
+                        <!-- Blog Post Thumbnail -->
+                        <a href="{{ article.get_absolute_url }}" class="bloglist-thumb-link ">
+                            
+                            {% if article.image %}
+                                <div class="bloglist-post-thumbnail" style="background: url({{ article.image.url }})"></div>
+                            {% else %}
+                                <div class="bloglist-post-thumbnail" style="background: url(static/assets/images/posters/no_image.jpg)"></div>
+                            {% endif %}
+                                
+                        </a>
+
+                        <!-- Blog Post Text Wrapper -->
+                        <div class="bloglist-text-wrapper">
+                            <!-- Author Avatar -->
+                            <span class="circle-img bloglist-avatar">
+                                
+                                {% if article.author.user_profile.avatar %}
+                                    <img src="{{ article.author.user_profile.avatar.url }}" width="50" height="50" alt="author img">
+                                {% else %}
+                                    <img src="{% static 'assets/images/user.png' %}" width="50" height="50" alt="author img">
+                                {% endif %}
+                                    
+                                
+                            </span>
+
+                            <h4 class="bloglist-title">
+                                <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                            </h4>
+
+                            <div class="bloglist-meta">
+                                <i class="fa fa-calendar"></i>{{ article.updated_at|date:"d/m/Y" }}
+                            </div>
+
+                            <div class="bloglist-excerpt">
+                                <a href="{{ article.get_absolute_url }}" class="btn btn-main btn-effect">read more</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- End of row -->
+
+        </div>
+    </section>
+    <!-- =============== END OF BLOG SECTION =============== -->
+    {% endblock latest_articles %}

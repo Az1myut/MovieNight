@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="subscribe bg-light2 ptb100">
+    <div class="container">
+
+        <!-- Start of row -->
+        <div class="row justify-content-center">
+            <div class="col-md-7 text-center">
+                <h2 class="title">Are you sure to delete this comment {{ comment }} ?</h2>
+                <form method="POST" action=""  novalidate>
+                    {% csrf_token %}
+                    <button class="btn btn-main btn-effect" type="submit">Confirm</button>
+                    <div></div> <br>
+                    <a class="btn btn-main btn-effect" href="{% url 'articles:article_detail' article.slug %}">Back To Article</a>
+                </form>
+            </div>
+        </div>
+        <!-- End of row -->
+
+
+        <!-- Start of row -->
+        
+        <!-- End of row -->
+
+
+    </div>
+</section>
+{% endblock content %}

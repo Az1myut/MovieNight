@@ -1,0 +1,5 @@
+{% for nav_item in staff_navi_items  %}
+<li>
+    <a class="dropdown-item" href="{% url nav_item.url %}">{{ nav_item.title }}</a>
+</li>
+{% endfor %}

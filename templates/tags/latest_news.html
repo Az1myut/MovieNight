@@ -1,0 +1,5 @@
+<ul class="blog-posts">
+    {% for news in latest_news %}
+        <li><a href="#">{{ news.title }}</a><small>{{ news.updated_at|date:"F j, Y" }}</small></li>
+    {% endfor %}
+</ul>

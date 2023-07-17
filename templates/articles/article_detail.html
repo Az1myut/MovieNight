@@ -1,0 +1,271 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+    
+
+    
+
+{% include 'messages/messages.html' %}
+
+        <!-- =============== START OF PAGE HEADER =============== -->
+        <section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+            <div class="container">
+                <div class="inner">
+                    <h2 class="title">{{ article.title }}</h2>
+                </div>
+            </div>
+        </section>
+        <!-- =============== END OF PAGE HEADER =============== -->
+
+
+
+        <!-- =============== START OF MAIN =============== -->
+        <main class="blog-detail ptb100">
+            <div class="container">
+
+                <!-- Start of Row -->
+                <div class="row">
+
+                    <!-- Start of Blog Post Content -->
+                    <div class="col-lg-9 col-md-8 col-sm-12">
+                        <div class="blog-post-wrapper">
+                            <!-- Start of Blog Post -->
+                            <article class="blog-post-detail">
+
+                                <!-- Image -->
+                                
+                                {% if article.image %}
+                                <div class="blog-thumb">
+                                    <img src="{{ article.image.url }}" alt="">
+                                </div>
+                                {% endif %}
+                                    
+                                
+
+                                <!-- Content -->
+                                <div class="post-content">
+                                    <h3 class="title">
+                                        <a href="blog-post-detail.html">
+                                            {{ article.title }}
+                                        </a>
+                                    </h3>
+
+                                    <ul class="post-meta">
+                                        <li>{{ article.updated_at|date:"F j, Y" }}</li>
+                                        {% if article.author.user_profile.username %}
+                                            <li>Author: {{ article.author.user_profile.username }}</li>
+                                        {% else %}
+                                            <li>Unknown Author</li>
+                                        {% endif %}
+                                        {% if article.get_number_comments %}
+                                            <li><a href="#">{{  article.get_number_comments }} Comments</a></li>
+                                        {% else %}
+                                            <li><a href="#">No Comments</a></li>
+                                        {% endif %}
+                                    </ul>
+
+                                    <p>{{ article.content }}</p>
+                                    {% if is_user_author_article %}
+                                    <a href="{% url 'articles:article_update' article.slug %}" class="btn btn-icon btn-main btn-effect">
+                                        Update 
+                                 
+                                    </a>
+                                    <a href="{% url 'articles:article_delete' article.slug %}" class="btn btn-icon btn-main btn-effect">
+                                        Delete
+    
+                                    </a>
+                                    {% endif %}
+                                    
+                                    
+                                </div>
+
+                            </article>
+                            <!-- End of Blog Post -->
+
+                            <hr class="op-5 mtb50">
+
+                            <!-- Start of Blog Post Comments -->
+                            
+                            {% if comments %}
+                                
+                            
+                                
+                            <div class="comments">
+                                <h3 class="title">Comments ({{  article.get_number_comments }})</h3>
+
+                                <ul class="list-unstyled mt30">
+                                    {% for comment in comments %}
+                                    <li class="media">
+                                        <div class="circle-img">
+                                            {% if comment.author.user_profile.avatar %}
+                                            <img class="d-flex mr-3 img-circle" src="{{ comment.author.user_profile.avatar.url }}" width="60" alt="">
+                                            {% else %}
+                                                <img class="d-flex mr-3 img-circle" src="{% static 'assets/images/user.png' %}" width="60" alt="">
+                                            {% endif %}
+                                        </div>
+                                        <div class="media-body">
+                                            {% if comment.author.user_profile.username %}
+                                                <h5 class="mt-0">{{ comment.author.user_profile.username }}</h5> 
+                                            {% else %}
+                                                <h5 class="mt-0">{{ comment.author.email }}</h5>
+                                            {% endif %}
+                                            {{ comment.text }}
+                                            <br>
+                                            <br>
+
+                                            
+                                            {% if comment.author != user %}
+                                                <a href="{% url 'articles:article_comment_child_add' slug=article.slug comment_id=comment.uuid %}" class="btn btn-main btn-effect">Reply</a>
+                                            {% endif %}
+                                                
+                                            
+                                            {% if user.is_superuser %}
+                                                <a href="{% url 'articles:article_comment_delete' slug=article.slug  comment_id=comment.uuid %}" class="btn btn-main btn-effect">Delete</a>
+                                            {% elif comment.author == user %}
+                                                <a href="{% url 'articles:article_comment_delete' slug=article.slug comment_id=comment.uuid %}" class="btn btn-main btn-effect">Delete</a>
+                                            {% endif %}
+                                            <!-- Child Comments START -->
+                                            
+                                            {% for child_comment in comment.get_all_child_comments %}
+                                                
+                                            
+                                                
+                                            <div class="media">
+                                                <div class="circle-img">
+                                                    {% if child_comment.author.user_profile.avatar %}
+                                                        <img class="d-flex mr-3 img-circle" src="{{ child_comment.author.user_profile.avatar.url }}" width="60" alt="">
+                                                    {% else %}
+                                                        <img class="d-flex mr-3 img-circle" src="{% static 'assets/images/user.png' %}" width="60" alt="">
+                                                    {% endif %}
+                                                </div>
+                                                
+
+                                                <div class="media-body">
+                                                    {% if child_comment.author.user_profile.username %}
+                                                        <h5 class="mt-0">{{ child_comment.author.user_profile.username }}</h5> 
+                                                    {% else %}
+                                                        <h5 class="mt-0">{{ child_comment.author.email }}</h5>
+                                                    {% endif %}
+                                                    {{ child_comment.text }}
+                                                    <br>
+                                                    {% if child_comment.parent_comment.parent_comment %}
+                                                    
+                                                    {% with child_comment.parent_comment.author as author  %}  
+                                                        {% if author.user_profile.username %}
+                                                            <span style= "font-size : 14px; font-weight: 700"><i>Reply to {{ author.user_profile.username }}</i></span>
+                                                        {% else %}
+                                                            <span style= "font-size : 14px; font-weight: 700"><i>Reply to {{ author.email }}</i></span>
+                                                        {% endif %}
+                                                    {% endwith %}
+                                                    {% endif %}
+                                                    <br>
+                                                    {% if child_comment.author != user %}
+                                                        <a href="{% url 'articles:article_comment_child_add' slug=article.slug comment_id=child_comment.uuid %}" class="btn btn-main btn-effect">Reply</a>
+                                                    {% endif %}
+                                                    {% if user.is_superuser %}
+                                                        <a href="{% url 'articles:article_comment_delete' slug=article.slug comment_id=child_comment.uuid %}" class="btn btn-main btn-effect">Delete</a>
+                                                    {% elif child_comment.author == user %}
+                                                        <a href="{% url 'articles:article_comment_delete' slug=article.slug comment_id=child_comment.uuid %}" class="btn btn-main btn-effect">Delete</a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                            <!-- Child Comments END -->
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                            
+                                 
+                                </ul>
+
+                            </div>
+                            <!-- End of Blog Post Comments -->
+                            {% endif %}
+                            <hr class="op-5 mtb50">
+
+
+                            <!-- Start of Comment Form -->
+                            <div class="comment-form">
+                                <h3 class="mt-0 mb-1">Add Comment</h3>
+                                
+
+                                <form class="row mt30" method="POST">
+                                    <div class="form-group col-md-12 m-t-20">
+                                        <textarea name="comment" class="form-control" rows="5" placeholder="Comment"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-12 m-t-20">
+                                        <button type="submit" class="btn btn-main btn-effect">Submit</button>
+                                    </div>
+                                    {% csrf_token %}
+                                </form>
+                            </div>
+                            <!-- End of Comment Form -->
+
+                        </div>
+                    </div>
+                    <!-- End of Blog Post Content -->
+
+
+                    <!-- Start of Sidebar -->
+                    <div class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="sidebar">
+
+    
+
+                            <!-- Start of Widget -->
+                            <aside class="widget widget-blog">
+                                <h3 class="title">Recent Articles</h3>
+
+                                <ul class="blog-posts-widget">
+                                    
+                                    {% for article in latest_articles %}
+                                        
+                                   
+                                        
+                                    <!-- Post 1 -->
+                                    <li>
+                                        <div class="blog-content">
+                                            <div class="blog-thumb">
+                                                <a href="{% url 'articles:article_detail' article.slug %}">
+                                                    {% if article.image %}
+                                                        <img src="{{ article.image.url }}" alt="">
+                                                    {% else %}
+                                                        <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+
+                                            <div class="blog-text">
+                                                <h5>
+                                                    
+                                                    <a href="{% url 'articles:article_detail' article.slug %}">
+                                                       {{ article.title }}
+                                                    </a>
+                                                </h5>
+                                                <span>{{ article.updated_at|date:"F j, Y" }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+
+                            </aside>
+                            <!-- End of Widget -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End of Row -->
+
+
+
+            </div>
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+
+
+       
+{% endblock content %}

@@ -1,0 +1,81 @@
+    
+{% block footer %}
+{% load static %}
+{% load custom_tags %}
+        
+    <!-- =============== START OF FOOTER =============== -->
+       <footer class="footer1 bg-dark">
+
+        <!-- ===== START OF FOOTER WIDGET AREA ===== -->
+        <div class="footer-widget-area ptb100">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Start of Widget 1 -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="widget widget-about">
+
+                            <h4 class="widget-title">About us</h4>
+                            <p class="nomargin">{% web_app_info %}</p>
+                        </div>
+                    </div>
+                    <!-- End of Widget 1 -->
+
+                    <!-- Start of Widget 2 -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="widget widget-links">
+                            <h4 class="widget-title">Useful links</h4>
+                            {% footer_useful_links %}
+                        </div>
+                    </div>
+                    <!-- End of Widget 2 -->
+
+                    <!-- Start of Widget 3 -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="widget widget-blog">
+                            <h4 class="widget-title">latest news</h4>
+                            {% latest_news %}
+                        </div>
+                    </div>
+                    <!-- End of Widget 3 -->
+
+                    <!-- Start of Widget 4 -->
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="widget widget-social">
+                            <h4 class="widget-title">follow us</h4>
+
+                            <p>Follow us in different social medias. Any support is necessary </p>
+                            {% footer_socials %}
+
+                        </div>
+                    </div>
+                    <!-- End of Widget 4 -->
+
+                </div>
+            </div>
+        </div>
+        <!-- ===== END OF FOOTER WIDGET AREA ===== -->
+
+
+        <!-- ===== START OF FOOTER COPYRIGHT AREA ===== -->
+        <div class="footer-copyright-area ptb30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex">
+                            <div >All Data collected by <a href="https://www.themoviedb.org/">TMBD</a>.</div>
+                            <div class="copyright ml-auto">All Rights Reserved by <a href="{% url 'pages:mainpage' %}">MovieNight</a>.</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ===== END OF FOOTER COPYRIGHT AREA ===== -->
+
+    </footer>
+    <!-- =============== END OF FOOTER =============== -->
+
+</div>
+<!-- =============== END OF WRAPPER =============== -->
+{% endblock footer %}

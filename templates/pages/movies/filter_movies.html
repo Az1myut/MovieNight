@@ -1,0 +1,189 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+
+    
+
+
+
+        <!-- =============== START OF PAGE HEADER =============== -->
+        <section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+            <div class="container">
+                <div class="inner">
+                    <h2 class="title">Movies Filter</h2> <br>
+                    <a href="{% url 'pages:mainpage' %}" class="btn btn-icon btn-main btn-effect">
+                        Back To Home
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- =============== END OF PAGE HEADER =============== -->
+
+
+
+        <!-- =============== START OF MAIN =============== -->
+        <main class="bg-light ptb100">
+            <div class="container">
+
+                <!-- Start of Filters -->
+                <form method='POST' action="{% url 'pages:filter_movies'  %}">
+                <div class="row mb50">
+                         
+                        
+                        <!-- Layout Switcher -->
+                        
+                            
+                        
+                
+                        <div class="col-md-6">
+
+                            <!-- Sort by -->
+                            <div class="sort-by">
+                                <div class="sort-by-select">
+                                    <select name='filter_choice' class="chosen-select-no-single">
+                                        <option value=0 >Filter Not Set</option>
+                                        <option value=1 >This Year</option>
+                                        <option value=2 >The Most Popular</option>
+                                        <option value=3 >Top Rated</option>
+                                        <option value=4 >Oldest</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type='submit' class="btn btn-icon btn-main btn-effect">
+                                Search for movies
+                            </button>
+                            <!-- Sort by / End -->
+    
+                        </div>
+                    {% comment %} <div class="col-md-6">
+
+                        <!-- Sort by -->
+                        <div class="sort-by">
+                            <div class="sort-by-select">
+                                <select name="filter_choice" class="chosen-select-no-single">
+                                    <option value=0 >Filter Set Set</option>
+                                    <option value=1>This Year</option>
+                                    <option value=2>The Most Popular</option>
+                                    <option value=3>Top Rated</option>
+                                    <option value=4>Oldest</option>
+                                </select>
+                            </div>
+                        </div> {% endcomment %}
+                        <!-- Sort by / End -->
+
+                    </div>
+                    {% csrf_token %}
+                </div>
+                </form>
+                
+                <!-- End of Filters -->
+
+
+
+                <!-- Start of Movie List -->
+                <h2>{{ filter_title }}</h2>
+                <div class="row">
+                
+                {% if object_list %}
+                {% for movie in page_obj %}
+                        
+                    
+                        
+                    <!-- Movie List Item -->
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="movie-box-3 mb30">
+                            <div class="listing-container">
+
+                                <!-- Movie List Image -->
+                                <div class="listing-image">
+                                    <!-- Image -->
+                                    {% if movie.image %}
+                                        <img src="{{ movie.image.url }}" alt="">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Movie List Content -->
+                                <div class="listing-content">
+                                    <div class="inner">
+
+                                    
+                                       
+
+                                        <h2 class="title"><a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.title }}</a></h2>
+
+                                        <!-- Rating -->
+                                        <div class="stars">
+                                            <div class="rating">
+                                                
+                                                {% if movie.vote_average %}
+                                                    <i class="fa fa-star"></i>
+                                                    <span>{{ movie.vote_average }}/10</span>
+                                                {% else %}
+                                                <i class="fa fa-star"></i>
+                                                    <span>No Rating</span>
+                                                {% endif %}
+                                                {% if movie.genres %}
+                                                    <span class="category">{% for genre in movie.genres.all  %}{{genre}}. {% endfor %}</span>
+                                                {% else %}
+                                                    <span class="category">Genres are unknown</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                        
+
+                                        <a href="{% url 'movies:movie_detail' movie.pk %}" class="btn btn-main btn-effect">details</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+                </div>
+                <!-- End of Movie List -->
+
+
+
+                <!-- Start of Pagination -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <nav class="pagination">
+                            <ul>
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page=1"><i class="ti-angle-double-left"></i></a></li>
+                                    <li><a href="?page={{ page_obj.previous_page_number }}"><i class="ti-angle-left"></i></a></li>
+                                {% endif %}
+
+                                <li><a href="?page=page_obj.number"  class="current-page">{{page_obj.number}}</a></li>
+                                {% if page_obj.has_next %}  
+                                    <li><a href="?page={{ page_obj.next_page_number }}" >{{ page_obj.next_page_number }}</a></li>
+                                {% endif %}
+                                    
+                                
+                                
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}"><i class="ti-angle-right"></i></a></li>
+                                    <li><a href="?page={{ paginator.num_pages }}"><i class="ti-angle-double-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                {% endif %}
+                <!-- End of Pagination -->
+
+            </div>
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+
+
+{% endblock content %}

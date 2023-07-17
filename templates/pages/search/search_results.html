@@ -1,0 +1,225 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+    
+
+
+        <!-- =============== START OF PAGE HEADER =============== -->
+        <section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+            <div class="container">
+                <div class="inner">
+                    <div class="search-form-wrapper search-form-rev">
+                        <div class="container">
+                
+                            <!-- ===== START OF SEARCH FORM ===== -->
+                            <form id="search-form-1" method='POST' action="{% url 'pages:search_movies' %}">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8 col-sm-10 col-12">
+                                        <div class="form-group">
+                                            <input name="search-input" type="text" id="search-keyword" value="" class="form-control" placeholder="Enter Movies Title or Related Keywords">
+                                            <button type="submit" class="btn btn-main btn-effect"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% csrf_token %}
+                            </form>
+                            <!-- ===== END OF SEARCH FORM ===== -->
+                
+                        </div>
+                    </div>
+                    <br>
+                    {% if object_list %}
+                        <h2 class="title">Movies Based On Your Query "{{ query }}" </h2>
+                    {% endif %}
+                </div>
+            </div>
+            
+        </section>
+        
+        <!-- =============== END OF PAGE HEADER =============== -->
+
+
+
+        <!-- =============== START OF MAIN =============== -->
+        <main class="ptb100">
+            <div class="container">
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <h2 class="title">Search Results</h2>
+                    </div>
+
+
+                    <div class="col-md-4 align-self-center text-right">
+                        <a href="{% url 'pages:mainpage' %}" class="btn btn-icon btn-main btn-effect">
+                            Back To Home
+                        </a>
+                    </div>
+                </div>
+                
+                
+                
+                {% if object_list %}
+                    
+                
+                    
+                <!-- Start of Movie List -->
+                <div class="row">
+                    {% for movie in page_obj %}
+                    
+                <!-- Movie List Item -->
+                    <div class="col-md-12 col-sm-12">
+                        <div class="movie-list-1 mb30">
+                            <div class="listing-container">
+
+                                <!-- Movie List Image -->
+                                <div class="listing-image">
+
+                                  
+
+                                 
+
+                                    <!-- Rating -->
+                                    <div class="stars">
+                                        <div class="rating">
+                                {% if movie.vote_average  %}
+                                        {% if movie.vote_average <= 2  %}
+                            
+                                           <i class="fa fa-star"></i>
+                                           <i class="fa fa-star-o"></i>
+                                           <i class="fa fa-star-o"></i>
+                                           <i class="fa fa-star-o"></i>
+                                           <i class="fa fa-star-o"></i>
+                                       
+                                        {% endif %}
+                                   {% if movie.vote_average > 2  %}
+                                       
+                                       {% if movie.vote_average <= 4 %}
+                                           
+                                          
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star-o"></i>
+                                               <i class="fa fa-star-o"></i>
+                                               <i class="fa fa-star-o"></i>
+                                          
+                                       {% endif %}
+                                   {% endif %}
+                                   {% if movie.vote_average > 4  %}
+                                       
+                                       {% if movie.vote_average <= 6 %}
+                                           
+                                           
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star-o"></i>
+                                               <i class="fa fa-star-o"></i>
+                                          
+                                       {% endif %}
+                                   {% endif %}
+                                   {% if movie.vote_average > 6  %}
+                                       
+                                       {% if movie.vote_average <= 8 %}
+                                           
+                                           
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star-o"></i>
+                                           
+                                       {% endif %}
+                                   {% endif %}
+                                   {% if movie.vote_average > 8  %}
+                                       
+                                       {% if movie.vote_average <= 10 %}
+                                           
+                                           
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                               <i class="fa fa-star"></i>
+                                       
+                                       {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <span>No Ratings</span>
+                                {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Image -->
+
+                                    {% if movie.image %}
+                                        <img src="{{ movie.image.url }}" alt="">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Movie List Content -->
+                                <div class="listing-content">
+                                    <div class="inner">
+                                        <h2 class="title"><a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.title }}</a></h2>
+                                        {% if movie.overview %}
+                                            <p> {{ movie.overview|get_two_sentences }}</p>
+                                        {% else %}
+                                            <p> No description </p>
+                                        {% endif %}
+                                        
+
+                                        <a href="{% url 'movies:movie_detail' movie.pk %}" class="btn btn-main btn-effect">details</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- Movie List Item -->
+
+                </div>
+                <!-- End of Movie List -->
+
+
+
+                <!-- Start of Pagination -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <nav class="pagination">
+                            <ul>
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page=1"><i class="ti-angle-double-left"></i></a></li>
+                                    <li><a href="?page={{ page_obj.previous_page_number }}"><i class="ti-angle-left"></i></a></li>
+                                {% endif %}
+
+                                <li><a href="?page=page_obj.number"  class="current-page">{{page_obj.number}}</a></li>
+                                {% if page_obj.has_next %}  
+                                    <li><a href="?page={{ page_obj.next_page_number }}" >{{ page_obj.next_page_number }}</a></li>
+                                {% endif %}
+                                    
+                                
+                                
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}"><i class="ti-angle-right"></i></a></li>
+                                    <li><a href="?page={{ paginator.num_pages }}"><i class="ti-angle-double-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- End of Pagination -->
+                {% else %}
+                    <h2>No Films Found Based On Your Query</h2>
+                    <h2>Try Out Somethig Different</h2>
+                {% endif %}
+                
+
+            </div>
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+
+
+{% endblock content %}

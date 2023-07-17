@@ -1,0 +1,98 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+    
+
+    
+
+
+        <!-- =============== START OF PAGE HEADER =============== -->
+        <section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+            <div class="container">
+                <div class="inner">
+                    <h2 class="title">Contact Us</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'pages:mainpage' %} ">Home</a></li>
+                        <li>Contact Us</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!-- =============== END OF PAGE HEADER =============== -->
+
+
+        {% include 'messages/messages.html' %}
+        <!-- =============== START OF MAIN =============== -->
+        <main class="contact-page ptb100">
+            <div class="container">
+                <div class="row">
+
+
+                    <!-- Start of Contact Details -->
+                    <div class="col-md-4 col-sm-12">
+                        <h3 class="title">Info</h3>
+
+                        <div class="details-wrapper">
+                            <p>{{ contacts.info }}</p>
+
+                            <ul class="contact-details">
+                                <li>
+                                    <i class="icon-phone"></i>
+                                    <strong>Phone:</strong>
+                                    <span>{{ contacts.phone }}</span>
+                                </li>
+                                <li>
+                                    <i class="icon-location-pin"></i>
+                                    <strong>Location:</strong>
+                                    <span>{{ contacts.adress }}</span>
+                                </li>
+                                <li>
+                                    <i class="icon-globe"></i>
+                                    <strong>Web:</strong>
+                                    <span><a href="{% url 'pages:mainpage' %}">{{ contacts.website }}</a></span>
+                                </li>
+                                <li>
+                                    <i class="icon-paper-plane"></i>
+                                    <strong>E-Mail:</strong>
+                                    <span>{{ contacts.email }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Start of Contact Details -->
+
+
+                    <!-- Start of Contact Form -->
+                    <div class="col-md-8 col-sm-12">
+                        <h3 class="title">Contact Form</h3>
+
+                        <!-- Start of Contact Form -->
+                        <form method='POST' id="contact-form" action="{% url 'contacts:contact_page' %}">
+
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            {% if form.non_field_errors %}
+                                        
+                                        {% for error in form.non_field_error %}
+                                            {{ error }}
+                                        {% endfor %}
+                                            
+                            {% endif %}
+                            <!-- Form Group -->
+                            <div class="form-group text-center">
+                                <button class="btn btn-main btn-effect" type="submit">Send message</button>
+                            </div>
+                        </form>
+                        <!-- End of Contact Form -->
+                    </div>
+                    <!-- Start of Contact Form -->
+
+                </div>
+            </div>
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+
+
+{% endblock content %}

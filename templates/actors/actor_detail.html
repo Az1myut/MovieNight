@@ -1,0 +1,86 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="celeb-detail-intro overlay-gradient ptb100">
+</section>
+<!-- =============== END OF MOVIE DETAIL INTRO =============== -->
+
+
+
+<!-- =============== START OF CELEBRITY DETAIL =============== -->
+<section class="celeb-detail pb100">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4 col-12">
+                <div class="celeb-img">
+                    {% if image %}
+                        <img src="{{ image.url }}" alt="">
+                    {% else %}
+                        <img src="{% static 'assets/images/user.png' %}" alt="">
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="col-md-8 col-12">
+                <div class="celeb-details">
+                    <h3 class="title">{{ name }}</h3>
+                    <span class="profession">Actor</span>
+
+                    <!-- tab links -->
+                    <!-- <ul class="nav tab-links">
+                        <li class="nav-item">
+                            <a class="nav-link" id="bio-tab" data-toggle="tab" href="#bio" aria-controls="bio" aria-expanded="false">biography</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="film-tab" data-toggle="tab" href="#filmography" aria-controls="filmography" aria-expanded="false">filmography</a>
+                        </li>
+                    </ul> -->
+
+                    <!-- Tab Content -->
+                    <br><br><br><br><br><br>
+                    <div class="tab-content mt70">
+
+                        
+                            <div class="bio-description">
+                                <p>{{ biography }}</p>
+
+                               
+                            </div>
+
+                            <div class="bio-details">
+                                <ul class="bio-wrapper">
+                                    {% if birth_date %}
+                                        <li><h6>Date of Birth:</h6>{{ birth_date|date:"j F Y" }}</li>
+                                    {% else %}
+                                        <li><h6>Date of Birth:</h6>Unknown</li>
+                                    {% endif %}
+                                    <li><h6>Popularity:</h6> {{ popularity }}</li>
+                                    <li><h6>Place of Birth:</h6>{{ birth_place }}</li>
+                                    <li><h6>Gnder:</h6>{{ gender }}</li>
+                                </ul>
+                            </div>
+
+                            <div class="clearfix"></div>
+                     
+
+                        
+                            <ul class="film-list">
+                                {% for movie in actor_movies %}
+                                    <li><a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.title }}</a><span class="year">{{ movie.release_date|date:"Y" }}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- =============== End OF CELEBRITY DETAIL =============== -->
+
+{% endblock content %}
+    

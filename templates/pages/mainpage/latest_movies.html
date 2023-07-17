@@ -1,0 +1,160 @@
+{% load static %}
+{% block latest_movies %}
+        <!-- =============== START OF LATEST MOVIES SECTION =============== -->
+<section class="latest-movies ptb100">
+    <div class="container">
+
+        <!-- Start of row -->
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="title">Latest Movies</h2>
+            </div>
+
+
+            <div class="col-md-4 align-self-center text-right">
+                <a href="{% url 'movies:latest_movies' %}" class="btn btn-icon btn-main btn-effect">
+                    view all
+                    <i class="ti-angle-double-right"></i>
+                </a>
+            </div>
+        </div>
+        <!-- End of row -->
+
+
+        <!-- Start of Latest Movies Slider -->
+        <div class="owl-carousel latest-movies-slider mt20">
+           
+            {% for movie in latest_movies %}
+                
+            
+                
+            <!-- === Start of Sliding Item 1 === -->
+            <div class="item">
+                <!-- Start of Movie Box -->
+                <div class="movie-box-1">
+
+                    <!-- Start of Poster -->
+                    <div class="poster">
+                               
+                        {% if movie.image %}
+                            <img src="{{ movie.image.url }}" alt="">
+                        {% else %}
+                            <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                        {% endif %}
+                      
+                    </div>
+                    <!-- End of Poster -->
+
+                    <!-- Start of Buttons -->
+                    <!-- <div class="buttons">
+                        <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" class="play-video">
+                            <i class="fa fa-play"></i>
+                        </a>
+                    </div> -->
+                    <!-- End of Buttons -->
+
+                    <!-- Start of Movie Details -->
+                    <div class="movie-details">
+                        <h4 class="movie-title">
+                            <a href="{% url 'movies:movie_detail' movie.pk %}">{{ movie.title }}</a>
+                        </h4>
+                        <span class="released">{{ movie.release_date|date:"j M Y" }}</span>
+                    </div>
+                    <!-- End of Movie Details -->
+
+                    
+                    <!-- Start of Rating -->
+                    <div class="stars">
+                        {% if movie.vote_average != 0 %}
+                            {% if movie.vote_average <= 2  %}
+                                
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                </div>
+                            {% endif %}
+                            {% if movie.vote_average > 2  %}
+                                
+                                {% if movie.vote_average <= 4 %}
+                                    
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            {% if movie.vote_average > 4  %}
+                                
+                                {% if movie.vote_average <= 6 %}
+                                    
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            {% if movie.vote_average > 6  %}
+                                
+                                {% if movie.vote_average <= 8 %}
+                                    
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            {% if movie.vote_average > 8  %}
+                                
+                                {% if movie.vote_average <= 10 %}
+                                    
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                            <span>{{ movie.vote_average }}/ 10</span>
+                        {% else %}
+                        <div class="rating">
+                            <span>No Rating</span>
+                           
+                        </div>
+                        {% endif %}
+                            
+                        
+                    </div>
+                    <!-- End of Rating -->
+
+                </div>
+                <!-- End of Movie Box -->
+            </div>
+            <!-- === End of Sliding Item 1 === -->
+            {% endfor %}
+
+
+            
+
+        </div>
+        <!-- End of Latest Movies Slider -->
+
+
+    </div>
+</section>
+<!-- =============== END OF LATEST MOVIES SECTION =============== -->
+{% endblock latest_movies %}
+    

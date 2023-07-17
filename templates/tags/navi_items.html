@@ -1,0 +1,6 @@
+
+{% for nav_item in navi_items  %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url nav_item.url %}">{{ nav_item.title }}                                                                                             </a>
+</li>
+{% endfor %}

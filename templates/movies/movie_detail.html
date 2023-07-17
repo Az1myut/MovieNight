@@ -1,0 +1,265 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+{% include 'messages/messages.html' %}
+<section class="movie-detail-intro overlay-gradient ptb100" style="background: url(assets/images/other/movie-detail-bg.jpg);">
+</section>
+<!-- =============== END OF MOVIE DETAIL INTRO =============== -->
+
+
+
+<!-- =============== START OF MOVIE DETAIL INTRO 2 =============== -->
+
+<section class="movie-detail-intro2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="movie-poster">
+                    
+                    {% if image %}
+                        <img src="{{ image.url }}" alt="">
+                    {% else %}
+                        <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                    {% endif %}
+                        
+                    
+
+                   
+                </div>
+
+
+                <div class="movie-details">
+                    
+                    {% if title %}
+                        <h3 class='title'>{{ title }}</h3>
+                    {% endif %}
+
+                    <ul class="movie-subtext">  
+                        <li>{{ runtime }}</li>
+                    
+    
+                        {% if genres %}
+                            <li>{% for genre in genres %} {{genre.name}}. {% endfor %}</li>
+                        {% else %}
+                            <li>Unknown genres</li>
+                        {% endif %}
+                        
+                        
+                        {% if release_date %}
+                            <li>{{ release_date|date:"j F Y" }}</li>
+                        {% else %}
+                            <li>Unknown Release Date</li>
+                        {% endif %}
+                         
+                        
+                    </ul>
+
+                    {% if movie in user.user_profile.favorite_movies.all %}
+                        <a href="{% url 'pages:user_favorites_remove' movie.pk %}" class="btn btn-main btn-effect ">Remove From Favorites</a>
+                    {% else %}
+                        <a href="{% url 'pages:user_favorites_add' movie.pk %}" class="btn btn-main btn-effect ">Add To Favorites</a>
+                    {% endif %}
+                    {% if user_like %}
+                        <a href="{% url 'movies:user_movie_like_unlike' pk=movie.pk action='unlike' %}" class="like-button liked">Liked {{movie.likes_count }}</a>
+                    {% else %}
+                        <a href="{% url 'movies:user_movie_like_unlike' pk=movie.pk action='like' %}" class="like-button unliked">Like</a>
+                    {% endif %}
+                    <div class="rating mt10">
+                        
+                    {% if vote_count > 0 %}
+                        {% if movie.vote_average <= 2  %}
+                            
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            
+                        {% endif %}
+                        {% if movie.vote_average > 2  %}
+                            
+                            {% if movie.vote_average <= 4 %}
+                                
+                               
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                               
+                            {% endif %}
+                        {% endif %}
+                        {% if movie.vote_average > 4  %}
+                            
+                            {% if movie.vote_average <= 6 %}
+                                
+                                
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                               
+                            {% endif %}
+                        {% endif %}
+                        {% if movie.vote_average > 6  %}
+                            
+                            {% if movie.vote_average <= 8 %}
+                                
+                                
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                
+                            {% endif %}
+                        {% endif %}
+                        {% if movie.vote_average > 8  %}
+                            
+                            {% if movie.vote_average <= 10 %}
+                                
+                                
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                            
+                            {% endif %}
+                        {% endif %}
+                        <span>{{ vote_count }} Ratings</span>
+                    {% else %}
+                        <span>No Rating</span>
+                    {% endif %}
+                            
+                        
+                    </div>
+                    {% if user_rate %}
+                        <span>Your Rate is {{ user_rate }}</span>
+                        <a href="{% url 'movies:user_movie_rate_delete' movie.pk %}" class="btn btn-main btn-effect" >Delete My Rate</a>
+                    {% else %}
+                        <form method="POST" action="{% url 'movies:user_movie_rate' movie.pk %}"> 
+                            {% csrf_token %}
+                            <div class="form-outline" style="width: 150px">
+                                
+                                <input name='rate_value' min="1" max="10" type="number" id="typeNumber" class="form-control">
+                                
+                                <button class="btn btn-main btn-effect" type="submit">Rate</button>
+                                
+                            </div>
+                        </form>
+                    {% endif %}
+                      
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- =============== End OF MOVIE DETAIL INTRO 2 =============== -->
+
+
+<!-- =============== START OF MOVIE DETAIL MAIN SECTION =============== -->
+<section class="movie-detail-main ptb100">
+    <div class="container">
+
+        <div class="row">
+            <!-- Start of Movie Main -->
+            <div class="col-lg-8 col-sm-12">
+                <div class="inner pr50">
+
+                    <!-- Storyline -->
+                    <div class="storyline">
+                        
+                        <h3> {{ full_title }}</h3>
+                        <h3 class="title">Storyline</h3>
+
+                        <p>{{ overview }}</p>
+                    </div>
+
+                    <!-- Media -->
+                    
+
+                </div>
+            </div>
+            <!-- End of Movie Main -->
+
+
+            <!-- Start of Sidebar -->
+            <div class="col-lg-4 col-sm-12">
+                <div class="sidebar">
+
+                    <!-- Start of Details Widget -->
+                    <aside class="widget widget-movie-details">
+                        <h3 class="title">Details</h3>
+
+                        <ul>
+                            
+                            {% if release_date %}
+                                <li><strong>Release date: </strong>{{ release_date|date:"j F Y" }}</li>
+                            {% else %}
+                                <li><strong>No Release Date</strong></li>
+                            {% endif %}
+                                
+                
+                            <li><strong>Budget: </strong>{{ budjet }}</li>
+                            <li><strong>Popularity: </strong>{{ popularity }}</li>
+                            <li><strong>Original Language: </strong>{{ original_language }}</li>
+                            <li><strong>Average Vote Rating: </strong>{{ vote_average|floatformat:2 }}</li>
+                            
+                        </ul>
+                    </aside>
+                    <!-- End of Details Widget -->
+
+                    <!-- Start of Details Widget -->
+                    <aside class="widget widget-movie-cast">
+                        <h3 class="title">Cast</h3>
+                        
+                        {% if actors %}
+                        <ul class="cast-wrapper">
+                            
+                            {% for actor in actors %}
+                                
+                            
+                                
+                                <li>
+                                    <a href="{% url 'actors:actor_detail' actor.pk %}">
+                                        <span class="circle-img">
+                                            
+                                            {% if actor.image %}
+                                                <img src="{{ actor.image.url }}" alt="">
+                                            {% else %}
+                                                <img src="{% static 'assets/images/user.png' %}" alt="">
+                                            {% endif %}
+                                                
+                                            
+                                        </span>
+                                        <h6 class="name">{{ actor.name }}</h6>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <a href="{% url 'movies:movie_actors' movie.pk %}" class="btn btn-main btn-effect mt20">view all</a>
+                        {% else %}
+                        <h3>No Cast</h3>
+                        {% endif %}
+                            
+                        
+                    </aside>
+                    <!-- End of Details Widget -->
+
+                </div>
+            </div>
+            <!-- End of Sidebar -->
+        </div>
+
+    </div>
+</section>
+<!-- =============== END OF MOVIE DETAIL MAIN SECTION =============== -->
+{% endblock content %}
+    

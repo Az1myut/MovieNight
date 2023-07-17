@@ -1,0 +1,109 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+    
+
+
+        <!-- =============== START OF PAGE HEADER =============== -->
+        <section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+            <div class="container">
+                <div class="inner">
+                    <h2 class="title">Favorite Movies</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="index.html">Home</a></li>
+                        <li>Favorite Movies</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!-- =============== END OF PAGE HEADER =============== -->
+
+
+
+        <!-- =============== START OF MAIN =============== -->
+        <main class="ptb100">
+            <div class="container">
+
+                {% if object_list %}
+                <!-- Start of Movie List -->
+                <div class="row">
+                    {% for movie in page_obj %}
+                    <!-- Watch Later Item -->
+                    <div class="col-md-12 col-sm-12">
+                        <div class="watch-later-item">
+                            <div class="listing-container">
+
+                                <!-- Movie List Image -->
+                                <div class="listing-image">
+                                    {% if movie.image %}
+                                        <img src="{{ movie.image.url }}"class="img-shadow" alt="">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/posters/no_image.jpg' %}" class="img-shadow" alt="">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Movie List Content -->
+                                <div class="listing-content">
+                                    <div class="inner">
+                                        <h3 class="title"><a href="{% url 'movies:movie_detail' movie.pk %}" >{{ movie.title }}</a></h3>
+                                        {% if movie.overview %}
+                                        <p>{{ movie.overview|get_two_sentences }}</p>
+                                        {% else %}
+                                        <p>There is not description</p>
+                                        {% endif %}
+
+                                        <a href="{% url 'pages:user_favorites_remove' movie.pk %}" class="btn btn-main btn-effect">Delete From Favorites</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- End of Movie List -->
+
+
+
+                <!-- Start of Pagination -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <nav class="pagination">
+                            <ul>
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page=1"><i class="ti-angle-double-left"></i></a></li>
+                                    <li><a href="?page={{ page_obj.previous_page_number }}"><i class="ti-angle-left"></i></a></li>
+                                {% endif %}
+
+                                <li><a href="?page=page_obj.number"  class="current-page">{{page_obj.number}}</a></li>
+                                {% if page_obj.has_next %}  
+                                    <li><a href="?page={{ page_obj.next_page_number }}" >{{ page_obj.next_page_number }}</a></li>
+                                {% endif %}
+                                    
+                                
+                                
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}"><i class="ti-angle-right"></i></a></li>
+                                    <li><a href="?page={{ paginator.num_pages }}"><i class="ti-angle-double-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- End of Pagination -->
+
+                {% else %}
+                    <h2>You Don't Have Favorites Yet</h2>
+                    <a href="{% url 'pages:mainpage' %}" class="btn btn-main btn-effect">Search For Movies</a>
+                {% endif %}
+
+            </div>
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+
+
+        {% endblock content %}
+    

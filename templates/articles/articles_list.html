@@ -1,0 +1,204 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+
+{% block content %}
+    
+
+    
+
+        <!-- =============== START OF PAGE HEADER =============== -->
+        <section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+            <div class="container">
+                <div class="inner">
+                    <h2 class="title">Articles List</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'pages:mainpage' %}">Home</a></li>
+                        <li>Blog List</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!-- =============== END OF PAGE HEADER =============== -->
+
+
+
+        <!-- =============== START OF MAIN =============== -->
+        <main class="blog-page ptb100">
+            <div class="container">
+
+                <div class="row">
+                    {% if object_list %}
+                            
+                        
+                    <!-- Start of Blog Posts -->
+                    <div class="col-lg-9 col-md-8 col-sm-12">
+                        
+                        
+                            
+                        {% for article in page_obj %}
+                            
+                        
+                            
+                        <!-- Start of Blog Post 1 -->
+                        <article class="blog-post">
+
+                            <!-- Image -->
+                            <div class="blog-thumb">
+                                <a href="{{ article.get_absolute_url }}" class="post-img">
+                                    
+                                    {% if article.image %}
+                                        <img src="{{ article.image.url }}" alt="">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                                    {% endif %}
+                                        
+                                    
+                                </a>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="post-content">
+                                <h3 class="title">
+                                    <a href="{{ article.get_absolute_url }}">
+                                        {{ article.title }}
+                                    </a>
+                                </h3>
+
+                                <ul class="post-meta">
+                                    <li>{{ article.updated_at|date:"F j, Y" }}</li>
+                                    
+                                    {% if article.author.user_profile.username %}
+                                        <li>Author: {{ article.author.user_profile.username }}</li>
+                                    {% else %}
+                                        <li>Unknown Author</li>
+                                    {% endif %}
+                                        
+                                    
+                                    {% if article.get_number_comments %}
+                                        <li><a href="{{ article.get_absolute_url }}">{{  article.get_number_comments }} Comments</a></li>
+                                    {% else %}
+                                        <li>No Comments</li>
+                                    {% endif %}
+                                        
+                                    
+                                </ul>
+
+                                <p>{{ article.content|get_two_sentences }}</p>
+
+                                <a href="{{ article.get_absolute_url }}" class="read-more">
+                                    Read More </i>
+                                </a>
+                                {% if article in user_articles %}
+                                <br>    
+                                <a href="{% url 'articles:article_update' article.slug %}" class="btn btn-icon btn-main btn-effect">
+                                    Update 
+                             
+                                </a>
+                                <a href="{% url 'articles:article_delete' article.slug%}" class="btn btn-icon btn-main btn-effect">
+                                    Delete
+
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </article>
+                        <!-- End of Blog Post 1 -->
+                        {% endfor %}
+                  
+        
+
+
+                        <!-- Start of Pagination -->
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <nav class="pagination">
+                                    <ul>
+                                        {% if page_obj.has_previous %}
+                                            <li><a href="?page=1"><i class="ti-angle-double-left"></i></a></li>
+                                            <li><a href="?page={{ page_obj.previous_page_number }}"><i class="ti-angle-left"></i></a></li>
+                                        {% endif %}
+        
+                                        <li><a href="?page=page_obj.number"  class="current-page">{{page_obj.number}}</a></li>
+                                        {% if page_obj.has_next %}  
+                                            <li><a href="?page={{ page_obj.next_page_number }}" >{{ page_obj.next_page_number }}</a></li>
+                                        {% endif %}
+                                            
+                                        
+                                        
+                                        {% if page_obj.has_next %}
+                                            <li><a href="?page={{ page_obj.next_page_number }}"><i class="ti-angle-right"></i></a></li>
+                                            <li><a href="?page={{ paginator.num_pages }}"><i class="ti-angle-double-right"></i></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <!-- End of Pagination -->
+
+                    </div>
+                    {% else %}
+                    <h2>  There are no articles</h2>
+                    {% endif %}
+                    <!-- End of Blog Posts -->
+
+
+
+                    <!-- Start of Sidebar -->
+                    <div class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="sidebar">
+
+    
+
+                            <!-- Start of Widget -->
+                            <aside class="widget widget-blog">
+                                <h3 class="title">Recent Articles</h3>
+
+                                <ul class="blog-posts-widget">
+                                    
+                                    {% for article in latest_articles %}
+                                        
+                                   
+                                        
+                                    <!-- Post 1 -->
+                                    <li>
+                                        <div class="blog-content">
+                                            <div class="blog-thumb">
+                                                <a href="{{ article.get_absolute_url }}">
+                                                    {% if article.image %}
+                                                        <img src="{{ article.image.url }}" alt="">
+                                                    {% else %}
+                                                        <img src="{% static 'assets/images/posters/no_image.jpg' %}" alt="">
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+
+                                            <div class="blog-text">
+                                                <h5>
+                                                    <a href="{{ article.get_absolute_url }}">
+                                                       {{ article.title }}
+                                                    </a>
+                                                </h5>
+                                                <span>{{ article.updated_at|date:"F j, Y" }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+
+                            </aside>
+                            <!-- End of Widget -->
+                        </div>
+                    </div>
+                    <!-- End of Sidebar -->
+                </div>
+
+            </div>
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+
+
+{% endblock content %}
