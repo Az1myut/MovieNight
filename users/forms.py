@@ -64,3 +64,13 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email']
+class EmailForm(forms.Form):
+    """
+    Форма пользователя 
+
+    Поля:
+        email(email) - Эмейл пользователя
+    """
+    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class': 'form-control',
+                                                                          'placeholder': 'Email',
+                                                                          'style': 'max-width: 300px;'}))

@@ -6,6 +6,34 @@ from .models import (
 from icecream import ic
 # Register your models here.
 
+def make_approved(modeladmin, request, queryset):
+    """
+    Помечает объекты модели как "выпущенные".
+
+    Параметры:
+        - modeladmin: Административная модель.
+        - request: Запрос пользователя.
+        - queryset: Выборка объектов.
+    """
+    queryset.update(approved=True)
+
+
+make_approved.short_description = "Approved"
+
+
+def make_unapproved(modeladmin, request, queryset):
+    """
+    Помечает объекты модели как "не выпущенные".
+
+    Параметры:
+        - modeladmin: Административная модель.
+        - request: Запрос пользователя.
+        - queryset: Выборка объектов.
+    """
+    queryset.update(approved=False)
+
+
+make_unapproved.short_description = "Not Approved"
 
 @admin.register(Article)
 class AdminArticle(admin.ModelAdmin):
@@ -19,8 +47,9 @@ class AdminArticle(admin.ModelAdmin):
         list_filter (tuple): Поля, используемые для фильтрации статей.
 
     """
+    actions = [make_approved, make_unapproved]
     search_fields = ('title',)
-    list_display = ['pk', 'title', 'author']
+    list_display = ['pk', 'title', 'author', 'approved']
     list_display_links = ('title',)
     list_filter = ('updated_at',)
 

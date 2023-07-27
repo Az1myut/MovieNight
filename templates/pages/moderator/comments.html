@@ -1,0 +1,161 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'messages/messages.html' %} 
+
+    
+             <!-- =============== START OF PAGE HEADER =============== -->
+             <section class="page-header overlay-gradient" style="background: url(assets/images/posters/movie-collection.jpg);">
+                <div class="container">
+                    <div class="inner">
+                        <h2 class="title">Comments</h2>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'pages:mainpage' %}">Home</a></li>
+                            <li>Comments List</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+            <!-- =============== END OF PAGE HEADER =============== -->
+
+        <!-- =============== START OF MAIN =============== -->
+        <main class="ptb100">
+            <div class="container">
+            <!-- Start of Filters -->
+            <form method='POST' action="{% url 'pages:moderator_comments'  %}">
+                <div class="row mb50">
+                         
+                        
+                        <!-- Layout Switcher -->
+                        
+                            
+                        
+                
+                        <div class="col-md-6">
+
+                            <!-- Sort by -->
+                            <div class="sort-by">
+                                <div class="sort-by-select">
+                                    <select name='filter_choice' class="chosen-select-no-single">
+                                        <option value=0>------------</option>
+                                        <option value=1>Delete</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type='submit' class="btn btn-icon btn-main btn-effect">
+                                Execute
+                            </button>
+                            <!-- Sort by / End -->
+    
+                        </div>
+                 
+
+                    </div>
+                    {% csrf_token %}
+                </div>
+                
+                
+                <!-- End of Filters -->
+
+                
+                {% if object_list %}
+                    
+                
+                
+                
+                    
+                
+                    
+                <!-- Start of Celebrities List -->
+                <div class="row">
+                    {% for comment in page_obj %}
+                    <!-- Celebrity List Item -->
+                    <div class="col-md-12 col-sm-12">
+                        <div class="celebrity-list-1">
+                            <div class="celeb-container">
+
+                                <!-- Celebrity Image -->
+
+                                <div class="celebrity-image">
+                                    
+                                        
+                                        {% if comment.author.user_profile.avatar %}    
+                                            <img src="{{ comment.author.user_profile.avatar.url }}" alt="">
+                                        {% else %}
+                                            <img src="{% static 'assets/images/user.png' %}" alt="">
+                                        {% endif %}
+                                   
+                                </div>
+
+                                <!-- Celebrity Content -->
+                                <div class="celebrity-content">
+                                    <div class="inner">
+                                        
+                                        {% if comment.author.user_profile.username %}
+                                            <h3 class="title">{{ comment.author.user_profile.username }}</h3>
+                                        {% else %}
+                                            <h3 class="title">{{ comment.author.email }}</h3>
+                                        {% endif %}
+                                            
+        
+
+                                        <p>{{ comment.text }}</p>
+                                    </div>
+                                    <br>
+                                    {% comment %} <a href="{% url 'pages:comment_delete' comment_id=comment.uuid %}" class="btn btn-main btn-effect">Delete</a> {% endcomment %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="1" name="{{ comment.uuid }}" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                        
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </form>
+                <!-- End of Celebrities List -->
+                
+
+
+                <!-- Start of Pagination -->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <nav class="pagination">
+                            <ul>
+                                {% if page_obj.has_previous %}
+                                    <li><a href="?page=1"><i class="ti-angle-double-left"></i></a></li>
+                                    <li><a href="?page={{ page_obj.previous_page_number }}"><i class="ti-angle-left"></i></a></li>
+                                {% endif %}
+
+                                <li><a href="?page=page_obj.number"  class="current-page">{{page_obj.number}}</a></li>
+                                {% if page_obj.has_next %}  
+                                    <li><a href="?page={{ page_obj.next_page_number }}" >{{ page_obj.next_page_number }}</a></li>
+                                {% endif %}
+                                    
+                                
+                                
+                                {% if page_obj.has_next %}
+                                    <li><a href="?page={{ page_obj.next_page_number }}"><i class="ti-angle-right"></i></a></li>
+                                    <li><a href="?page={{ paginator.num_pages }}"><i class="ti-angle-double-right"></i></a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- End of Pagination -->
+            {% else %}
+                <h1>No Comments </h1>
+            {% endif %}
+            </div>
+        </main>
+        <!-- =============== END OF MAIN =============== -->
+
+
+
+        {% endblock content %}

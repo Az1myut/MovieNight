@@ -10,7 +10,7 @@ from django.views.generic import (
     DetailView,
 )
 from movies.models import Movie, Keyword
-from articles.models import Article
+from articles.models import Article, Comment
 from datetime import date, timedelta
 from icecream import ic
 from pathlib import Path
@@ -117,7 +117,6 @@ class MainpageTemplateView(TemplateView):
         context['popular_movies'] = self.get_popular_month_movies()
         context['latest_articles'] = self.get_latest_articles()
         access = self.request.COOKIES.get('access_token')
-        ic(access)
         return context
 
 
@@ -574,3 +573,21 @@ class UserFavoriteMoviesRemoveDetailView(LoginRequiredMixin, DetailView):
         if not previous_url:
             return redirect('movies:movie_detail', pk=kwargs.get('pk'))
         return redirect(previous_url)
+
+class ModeratorCommentsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    paginate_by = 8
+    template_name = 'pages/moderator/comments.html'
+    
+    def test_func(self):
+        user = self.request.user
+        if user.is_moderator:
+            return True
+        return False
+
+    def get_queryset(self):
+        comments = Comment.objects.select_related('author','article')
+        return comments
+
+    def get(self, request, *args, **kwargs):
+        request.session['previous_url'] = request.build_absolute_uri()
+        return super().get(request, *args, **kwargs)

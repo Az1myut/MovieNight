@@ -57,6 +57,26 @@
                         
                     </li>
                     {% endif %}
+                    
+                    {% if user.is_moderator %}
+                        
+                    
+                        
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Moderator
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="/admin/articles/article/">Articles Moderation</a>
+                                <a class="dropdown-item" href="/admin/articles/comment/">Comments Moderation</a>
+                                
+                            </li>
+                        </ul> 
+                        
+                    </li>
+                    {% endif %}
+                    
 
                 </ul>
                 <!-- ====== End of Main Menu ====== -->

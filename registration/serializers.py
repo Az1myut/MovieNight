@@ -33,11 +33,9 @@ class UserSerialzer(serializers.ModelSerializer):
             User: Созданный экземпляр пользователя.
         """
         password = validated_data.pop('password', None)
-        ic(password)
         instance = User(**validated_data)
         if password is not None:
             instance.set_password(password)
-        ic(instance.password)
         instance.save()
         return instance
 

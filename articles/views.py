@@ -215,7 +215,7 @@ class ArticleDeleteView(PermissionRequiredMixin, DeleteView):
     context_object_name = 'article'
     template_name = 'articles/article_delete.html'
     model = Article
-    permission_required = 'articles.delete_article'
+    permission_required = 'articles.delete_article' 
     raise_exception = True
 
     success_url = reverse_lazy('pages:user_articles')
@@ -389,7 +389,7 @@ class ArticleCommentDeleteView(UserPassesTestMixin, DeleteView):
             bool: True, если пользователь является суперпользователем или автором комментария, иначе False.
         """
         user = self.request.user
-        if user.is_superuser:
+        if user.is_superuser or user.is_moderator:
             return True
         comment = self.get_object()
         if comment in user.author_comments.all():
@@ -454,6 +454,7 @@ class ArticleCommentDeleteView(UserPassesTestMixin, DeleteView):
         article_slug = self.kwargs.get('slug')
         get_object_or_404(Article, slug=article_slug)
         return redirect('articles:article_detail', slug=article_slug)
+        
 
 class ArticleAddChildCommentCreateView(LoginRequiredMixin,UserPassesTestMixin, CreateView):
     template_name = 'comments/comment_add.html'
@@ -470,7 +471,6 @@ class ArticleAddChildCommentCreateView(LoginRequiredMixin,UserPassesTestMixin, C
         article_slug = self.kwargs.get('slug')
         article = get_object_or_404(Article, slug=article_slug)
         context['article'] = article
-        ic(self.get_object())
         return context
 
     def get_object(self):
@@ -491,5 +491,27 @@ class ArticleAddChildCommentCreateView(LoginRequiredMixin,UserPassesTestMixin, C
         article_slug = self.kwargs.get('slug')
         get_object_or_404(Article, slug=article_slug)
         messages.success(self.request, 'Yout comment was successfully added')
+        
         return redirect('articles:article_detail', slug=article_slug)
-    
+        
+
+class CommmentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    context_object_name = 'comment'
+    template_name = 'comments/comment_delete.html'
+    model = Comment
+    success_url = reverse_lazy('pages:moderator_comments')
+
+    def test_func(self):
+        user = self.request.user
+        if user.is_superuser or user.is_moderator:
+            return True
+        return False
+
+    def form_valid(self, form):
+        messages.success(self.request, "The Comment was deleted successfully.")
+        return super().form_valid(self)
+
+    def get_object(self):
+        comment_id = self.kwargs.get('comment_id')
+        comment = get_object_or_404(Comment, uuid=comment_id)
+        return comment

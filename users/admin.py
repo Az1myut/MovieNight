@@ -50,6 +50,7 @@ class CustomUserAdmin(UserAdmin):
         "email",
         "is_staff",
         "is_active",
+        "is_moderator",
         "is_superuser",
     )
     list_filter = ("email", "is_staff", "is_active", "is_superuser")
@@ -66,6 +67,7 @@ class CustomUserAdmin(UserAdmin):
                     "is_active",
                     "is_staff",
                     "is_superuser",
+                    "is_moderator",
                     "groups",
                     "user_permissions",
                 ),
@@ -82,6 +84,7 @@ class CustomUserAdmin(UserAdmin):
                     "email",
                     "password1",
                     "password2",
+                    'is_moderator',
                     "is_staff",
                     "is_active",
                 ),

@@ -6,7 +6,7 @@ from django.db.models.signals import(
 import os
 from django.dispatch import receiver
 from .models import UserProfile, User
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
 from articles.models import Article
 
@@ -31,6 +31,9 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
                 instance.user_permissions.add(perm)
         UserProfile.objects.create(user=instance)
         instance.user_profile.save()
+        if instance.is_moderator:
+            group = Group.objects.get(name='moderators')
+            instance.groups.add(group)
     else:
         pass
 

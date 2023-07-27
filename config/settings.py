@@ -158,6 +158,16 @@ SIMPLE_JWT = {
     'JWT_VERIFY': True,
 }
 
+# EMAIL_CONFIG
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'azimovstar01@gmail.com'
+EMAIL_HOST_PASSWORD = 'ofzgwyogebendnln'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True   
+# EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'azimovstar01@gmail.com'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

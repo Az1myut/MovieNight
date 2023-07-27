@@ -13,7 +13,7 @@
                     {% csrf_token %}
                     <button class="btn btn-main btn-effect" type="submit">Confirm</button>
                     <div></div> <br>
-                    <a class="btn btn-main btn-effect" href="{% url 'articles:article_detail' article.slug %}">Back To Article</a>
+                    <a class="btn btn-main btn-effect" href="{% url 'pages:moderator_comments'  %}">Back To Comments</a>
                 </form>
             </div>
         </div>

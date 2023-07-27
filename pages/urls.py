@@ -9,8 +9,10 @@ from .views import (
     UserArticlesListView,
     UserFavoriteMoviesListView,
     UserFavoriteMoviesAddDetailView,
-    UserFavoriteMoviesRemoveDetailView
+    UserFavoriteMoviesRemoveDetailView,
+    ModeratorCommentsListView,
 )
+from articles.views import CommmentDeleteView
 app_name = 'pages'
 urlpatterns = [
     path('filter/movies/', filter_movies, name='filter_movies'),
@@ -22,5 +24,7 @@ urlpatterns = [
     path('my/favorites/', UserFavoriteMoviesListView.as_view(), name='user_favorites'),
     path('my/favorites/<int:pk>/add/', UserFavoriteMoviesAddDetailView.as_view(), name='user_favorites_add'),
     path('my/favorites/<int:pk>/remove/', UserFavoriteMoviesRemoveDetailView.as_view(), name='user_favorites_remove'),
+    # path('moderator/comments', ModeratorCommentsListView.as_view(), name='moderator_comments'),
+    # path('moderator/comments/<uuid:comment_id>/delete', CommmentDeleteView.as_view(), name='comment_delete'),
     path('', MainpageTemplateView.as_view(), name='mainpage'),
 ]           
